@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mcc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
+    <context:component-scan base-package="ir.maktabExcersice"/>
+    <mcc:annotation-driven/>
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property value="/WEB-INF/views/" name="prefix"/>
+        <property value=".jsp" name="suffix"/>
+    </bean>
+    <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSource">
+    <property value="com.mysql.cj.jdbc.Driver" name="driverClassName"/>
+    <property value="jdbc:mysql://localhost:3306/testNajafi" name="url"/>
+    <property value="root" name="username"/>
+    <property value="Padina13930320@" name="password"/>
+</bean>
+    <bean class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" id="myEmf">
+    <property name="dataSource" ref="dataSource"/>
+    <property value="ir.maktabExcersice.models" name="packagesToScan"/>
+    <property name="jpaVendorAdapter">
+    <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
+</property>
+    <property name="jpaProperties">
+    <props>
+    <prop key="hibernate.hbm2ddl.auto">update</prop>
+    <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+</props>
+</property>
+</bean>
+    <bean class="org.springframework.orm.jpa.JpaTransactionManager" id="transactionManager">
+    <property name="entityManagerFactory" ref="myEmf"/>
+</bean>
+    <bean id="customerRepo" class="ir.maktabExcersice.repositories.CustomerRepositoryImpl"/>
+    <bean id="customerService" class="ir.maktabExcersice.services.CustomerServiceImpel"/>
+</beans>
